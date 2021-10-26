@@ -53,7 +53,21 @@ namespace SchoolAPI.Models.Services
         .FirstOrDefaultAsync(s => s.Id == id);
     }
 
-    public async Task<Course> GetCourseByCode(string code)
+        public async Task DropStudent(int courseId, int studentId)
+        {
+            var e = await _context.Enrollments
+                .FirstOrDefaultAsync(e =>
+                    e.CourseId == courseId &&
+                    e.StudentId == studentId
+                );
+
+            // TODO: TDD to see what happens if e is null
+
+            _context.Enrollments.Remove(e);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Course> GetCourseByCode(string code)
     {
 
       return await _context.Courses
