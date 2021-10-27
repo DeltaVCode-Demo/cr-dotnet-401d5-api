@@ -21,14 +21,14 @@ namespace SchoolAPI.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register(RegisterData data)
+        public async Task<ActionResult<UserDto>> Register(RegisterData data)
         {
             var user = await userService.Register(data, this.ModelState);
 
             if (user == null)
                 return BadRequest(new ValidationProblemDetails(ModelState));
 
-            return Ok(user);
+            return user;
         }
     }
 }
