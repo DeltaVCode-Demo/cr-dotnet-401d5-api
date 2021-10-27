@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SchoolAPI.Models.Identity;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace SchoolAPI.Services.Identity
             this.userManager = userManager;
         }
 
-        public async Task<ApplicationUser> Register(RegisterData data)
+        public async Task<ApplicationUser> Register(RegisterData data, ModelStateDictionary modelState)
         {
             var user = new ApplicationUser
             {
@@ -29,6 +30,16 @@ namespace SchoolAPI.Services.Identity
             if (result.Succeeded)
             {
                 return user;
+            }
+
+            foreach (var error in result.Errors)
+            {
+                var errorKey =
+                    error.Code.Contains("Password") ? nameof(data.Password) :
+                    error.Code.Contains("Email") ? nameof(data.Email) :
+                    error.Code.Contains("UserName") ? nameof(data.Username) :
+                    "";
+                modelState.AddModelError(errorKey, error.Description);
             }
 
             return null;
