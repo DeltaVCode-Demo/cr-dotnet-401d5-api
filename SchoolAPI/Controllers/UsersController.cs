@@ -30,5 +30,16 @@ namespace SchoolAPI.Controllers
 
             return user;
         }
+
+        [HttpPost("Login")]
+        public async Task<ActionResult<UserDto>> Login(LoginData data)
+        {
+            var user = await userService.Authenticate(data);
+
+            if (user == null)
+                return Unauthorized();
+
+            return user;
+        }
     }
 }
