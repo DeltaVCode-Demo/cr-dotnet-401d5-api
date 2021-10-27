@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SchoolAPI.Models;
+using SchoolAPI.Models.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SchoolAPI.Data
 {
-  public class SchoolDbContext : DbContext
+  public class SchoolDbContext : IdentityDbContext<ApplicationUser>
   {
     public DbSet<Student> Students { get; set; }
     public DbSet<Technology> Technologies { get; set; }
@@ -21,8 +23,8 @@ namespace SchoolAPI.Data
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-      // This calls the base method, but does nothing
-      // base.OnModelCreating(modelBuilder);
+      // This calls the base method, and IdentityDbContext does interesting stuff
+      base.OnModelCreating(modelBuilder);
 
       modelBuilder.Entity<Student>().HasData(
         new Student { Id = 1, FirstName = "John", LastName = "Cokos" }
