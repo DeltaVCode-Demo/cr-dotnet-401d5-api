@@ -21,15 +21,12 @@ namespace SchoolAPI.Services.Identity
         {
             var user = await userManager.FindByNameAsync(data.Username);
 
-            if (!await userManager.CheckPasswordAsync(user, data.Password))
-                return null;
-
-            return new UserDto
+            if (await userManager.CheckPasswordAsync(user, data.Password))
             {
-                UserId = user.Id,
-                Username = user.UserName,
-                Email = user.Email,
-            };
+                return CreateUserDto(user);
+            }
+
+            return null;
         }
 
         public async Task<UserDto> Register(RegisterData data, ModelStateDictionary modelState)
@@ -44,12 +41,7 @@ namespace SchoolAPI.Services.Identity
 
             if (result.Succeeded)
             {
-                return new UserDto
-                {
-                    UserId = user.Id,
-                    Email = user.Email,
-                    Username = user.UserName,
-                };
+                return CreateUserDto(user);
             }
 
             foreach (var error in result.Errors)
@@ -63,6 +55,16 @@ namespace SchoolAPI.Services.Identity
             }
 
             return null;
+        }
+
+        private UserDto CreateUserDto(ApplicationUser user)
+        {
+            return new UserDto
+            {
+                UserId = user.Id,
+                Email = user.Email,
+                Username = user.UserName,
+            };
         }
     }
 }
