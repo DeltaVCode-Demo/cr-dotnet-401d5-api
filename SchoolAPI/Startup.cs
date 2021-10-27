@@ -11,6 +11,7 @@ using SchoolAPI.Data;
 using SchoolAPI.Models.Identity;
 using SchoolAPI.Models.Interfaces;
 using SchoolAPI.Models.Services;
+using SchoolAPI.Services.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,6 +56,7 @@ namespace SchoolAPI
                 })
                 .AddEntityFrameworkStores<SchoolDbContext>();
 
+            services.AddScoped<IUserService, IdentityUserService>();
 
             services.AddControllers().AddNewtonsoftJson(options =>
               options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
