@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Logging;
 using SchoolAPI.Models.Identity;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,13 @@ namespace SchoolAPI.Services.Identity
     {
         private readonly UserManager<ApplicationUser> userManager;
 
-        public IdentityUserService(UserManager<ApplicationUser> userManager)
+        public IdentityUserService(UserManager<ApplicationUser> userManager, ILogger<IdentityUserService> logger)
         {
             this.userManager = userManager;
+            Logger = logger;
         }
+
+        public ILogger<IdentityUserService> Logger { get; }
 
         public async Task<UserDto> Authenticate(LoginData data)
         {
@@ -26,6 +30,7 @@ namespace SchoolAPI.Services.Identity
                 return CreateUserDto(user);
             }
 
+            Logger.LogInformation("Invalid login for username '{Username}'", data.Username);
             return null;
         }
 
