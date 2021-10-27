@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using SchoolAPI.Data;
+using SchoolAPI.Models.Identity;
 using SchoolAPI.Models.Interfaces;
 using SchoolAPI.Models.Services;
 using System;
@@ -44,6 +46,15 @@ namespace SchoolAPI
             services.AddTransient<IStudent, StudentService>();
             services.AddTransient<ICourse, CourseService>();
             services.AddTransient<ITechnology, TechnologyService>();
+
+            // Identity!
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+                {
+                    // Configure password requirements, etc
+                    options.User.RequireUniqueEmail = true;
+                })
+                .AddEntityFrameworkStores<SchoolDbContext>();
+
 
             services.AddControllers().AddNewtonsoftJson(options =>
               options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
