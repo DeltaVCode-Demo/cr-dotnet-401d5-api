@@ -15,7 +15,8 @@ namespace SchoolAPI.Services.Identity
         {
             this.userManager = userManager;
         }
-        public async Task Register(RegisterData data)
+
+        public async Task<ApplicationUser> Register(RegisterData data)
         {
             var user = new ApplicationUser
             {
@@ -23,7 +24,14 @@ namespace SchoolAPI.Services.Identity
                 UserName = data.Username,
                 // PasswordHash = data.Password // NOOOOOOO
             };
-            await userManager.CreateAsync(user, data.Password);
+            var result = await userManager.CreateAsync(user, data.Password);
+
+            if (result.Succeeded)
+            {
+                return user;
+            }
+
+            return null;
         }
     }
 }
