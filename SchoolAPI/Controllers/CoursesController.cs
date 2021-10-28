@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchoolAPI.Models;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace SchoolAPI.Controllers
 {
+  [Authorize]
   [Route("api/[controller]")]
   [ApiController]
   public class CoursesController : ControllerBase
@@ -66,6 +68,7 @@ namespace SchoolAPI.Controllers
     }
 
     // DELETE: api/Courses/5
+    [Authorize(Roles = "Administrator")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCourses(int id)
     {

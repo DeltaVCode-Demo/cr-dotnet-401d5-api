@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchoolAPI.Models;
@@ -40,6 +41,7 @@ namespace SchoolAPI.Controllers
 
     // PUT: api/Technologies/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [Authorize(Roles = "Administrator")]
     [HttpPut("{id}")]
     public async Task<IActionResult> PutTechnology(int id, Technology technology)
     {
@@ -55,6 +57,7 @@ namespace SchoolAPI.Controllers
 
     // POST: api/Technologies
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [Authorize(Roles = "Administrator")]
     [HttpPost]
     public async Task<ActionResult<Technology>> PostTechnology(Technology technology)
     {
@@ -66,6 +69,7 @@ namespace SchoolAPI.Controllers
     }
 
     // DELETE: api/Technologies/5
+    [Authorize(Roles = "Administrator")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteTechnologies(int id)
     {
