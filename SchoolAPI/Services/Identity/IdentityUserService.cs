@@ -5,6 +5,7 @@ using SchoolAPI.Models.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SchoolAPI.Services.Identity
@@ -34,6 +35,14 @@ namespace SchoolAPI.Services.Identity
 
             Logger.LogInformation("Invalid login for username '{Username}'", data.Username);
             return null;
+        }
+
+        public async Task<UserDto> GetUser(ClaimsPrincipal principal)
+        {
+            var user = await userManager.GetUserAsync(principal);
+            if (user == null) return null;
+
+            return await CreateUserDto(user);
         }
 
         public async Task<UserDto> Register(RegisterData data, ModelStateDictionary modelState)

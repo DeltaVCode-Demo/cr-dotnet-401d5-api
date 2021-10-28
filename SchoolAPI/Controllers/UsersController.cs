@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchoolAPI.Models.Identity;
 using SchoolAPI.Services.Identity;
@@ -40,6 +41,14 @@ namespace SchoolAPI.Controllers
                 return Unauthorized();
 
             return user;
+        }
+
+        // Can't access this if you are not signed in!
+        [Authorize]
+        [HttpGet("[action]")]
+        public async Task<ActionResult<UserDto>> Self()
+        {
+            return await userService.GetUser(this.User);
         }
     }
 }
