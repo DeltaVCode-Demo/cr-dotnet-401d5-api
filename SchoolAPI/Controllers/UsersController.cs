@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SchoolAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -20,7 +20,7 @@ namespace SchoolAPI.Controllers
             this.userService = userService;
         }
 
-        [HttpPost("Register")]
+        [HttpPost("[action]")]
         public async Task<ActionResult<UserDto>> Register(RegisterData data)
         {
             var user = await userService.Register(data, this.ModelState);

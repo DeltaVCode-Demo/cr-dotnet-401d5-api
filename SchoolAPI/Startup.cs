@@ -57,6 +57,7 @@ namespace SchoolAPI
                 .AddEntityFrameworkStores<SchoolDbContext>();
 
             services.AddScoped<IUserService, IdentityUserService>();
+            services.AddSingleton<JwtService>();
 
             services.AddControllers().AddNewtonsoftJson(options =>
               options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
@@ -76,6 +77,12 @@ namespace SchoolAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(options =>
+            {
+                options.AllowAnyMethod();
+                options.AllowAnyOrigin();
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
