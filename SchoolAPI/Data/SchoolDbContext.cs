@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SchoolAPI.Models;
@@ -46,6 +47,22 @@ namespace SchoolAPI.Data
       modelBuilder.Entity<Enrollment>().HasKey(
         enrollment => new { enrollment.CourseId, enrollment.StudentId }
       );
+
+      SeedRole(modelBuilder, "Administrator");
+      SeedRole(modelBuilder, "Editor");
+      SeedRole(modelBuilder, "Admissions");
+    }
+
+    private void SeedRole(ModelBuilder modelBuilder, string roleName)
+    {
+      var role = new IdentityRole
+      {
+        Id = roleName,
+        Name = roleName,
+        NormalizedName = roleName.ToUpper(),
+        ConcurrencyStamp = Guid.Empty.ToString(),
+      };
+      modelBuilder.Entity<IdentityRole>().HasData(role);
     }
   }
 
