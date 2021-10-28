@@ -29,7 +29,7 @@ namespace SchoolAPI.Services.Identity
 
             if (await userManager.CheckPasswordAsync(user, data.Password))
             {
-                return CreateUserDto(user);
+                return await CreateUserDto(user);
             }
 
             Logger.LogInformation("Invalid login for username '{Username}'", data.Username);
@@ -48,7 +48,7 @@ namespace SchoolAPI.Services.Identity
 
             if (result.Succeeded)
             {
-                return CreateUserDto(user);
+                return await CreateUserDto(user);
             }
 
             foreach (var error in result.Errors)
@@ -64,13 +64,15 @@ namespace SchoolAPI.Services.Identity
             return null;
         }
 
-        private UserDto CreateUserDto(ApplicationUser user)
+        private async Task<UserDto> CreateUserDto(ApplicationUser user)
         {
             return new UserDto
             {
                 UserId = user.Id,
                 Email = user.Email,
                 Username = user.UserName,
+
+                Token = await jwtService.GetToken(user, TimeSpan.FromMinutes(5))
             };
         }
     }

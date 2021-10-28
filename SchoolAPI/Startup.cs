@@ -58,7 +58,7 @@ namespace SchoolAPI
                 .AddEntityFrameworkStores<SchoolDbContext>();
 
             services.AddScoped<IUserService, IdentityUserService>();
-            services.AddSingleton<JwtService>();
+            services.AddScoped<JwtService>(); // Depends on SignInManager
 
             services
                 .AddAuthentication(options =>
