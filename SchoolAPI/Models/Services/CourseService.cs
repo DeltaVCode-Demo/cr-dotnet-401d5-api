@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SchoolAPI.Data;
+using SchoolAPI.Models.DTO;
 using SchoolAPI.Models.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -17,17 +18,26 @@ namespace SchoolAPI.Models.Services
     {
       _context = context;
     }
-    public async Task<Course> Create(Course course)
+    public async Task<CourseDto> Create(CourseDto data)
     {
-      // course is an instance of Sudent
-      // the current state of the course object: raw
+      var technology = await _context.Technologies
+        .SingleAsync(t => t.Name == data.Technology);
+      // TODO: add error to ModelState if Technology not found
+
+      var course = new Course
+      {
+        CourseCode = data.CourseCode,
+        Technology = technology,
+      };
 
       _context.Entry(course).State = EntityState.Added;
       // the current state of the course object: added
 
       await _context.SaveChangesAsync();
 
-      return course;
+      data.CourseId = course.Id;
+
+      return data;
     }
 
 

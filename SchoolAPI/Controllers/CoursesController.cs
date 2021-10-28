@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchoolAPI.Models;
+using SchoolAPI.Models.DTO;
 using SchoolAPI.Models.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,6 @@ namespace SchoolAPI.Controllers
     }
 
     // GET: api/Courses
-    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
     {
@@ -59,13 +59,13 @@ namespace SchoolAPI.Controllers
     // POST: api/Courses
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Course>> PostCourse(Course course)
+    public async Task<ActionResult<CourseDto>> PostCourse(CourseDto course)
     {
       await _course.Create(course);
 
       // Return a 201 Header to browser
       // The body of the request will be us running GetCourse(id);
-      return CreatedAtAction("GetCourse", new { id = course.Id }, course);
+      return CreatedAtAction("GetCourse", new { id = course.CourseId }, course);
     }
 
     // DELETE: api/Courses/5
