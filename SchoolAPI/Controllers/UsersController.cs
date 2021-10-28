@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace SchoolAPI.Controllers
 {
+    [Authorize]
     [Route("api/v1/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -21,6 +22,7 @@ namespace SchoolAPI.Controllers
             this.userService = userService;
         }
 
+        [AllowAnonymous]
         [HttpPost("[action]")]
         public async Task<ActionResult<UserDto>> Register(RegisterData data)
         {
@@ -32,6 +34,7 @@ namespace SchoolAPI.Controllers
             return user;
         }
 
+        [AllowAnonymous]
         [HttpPost("Login")]
         public async Task<ActionResult<UserDto>> Login(LoginData data)
         {

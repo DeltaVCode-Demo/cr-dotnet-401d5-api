@@ -24,6 +24,7 @@ namespace SchoolAPI.Controllers
     }
 
     // GET: api/Courses
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
     {
