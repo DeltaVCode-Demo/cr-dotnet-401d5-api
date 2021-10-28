@@ -48,7 +48,12 @@ namespace SchoolAPI.Controllers
         [HttpGet("[action]")]
         public async Task<ActionResult<UserDto>> Self()
         {
-            return await userService.GetUser(this.User);
+            var user = await userService.GetUser(this.User);
+
+            if (user == null)
+                return NotFound();
+
+            return user;
         }
     }
 }
