@@ -101,6 +101,7 @@ namespace SchoolAPI
                 });
 
                 options.OperationFilter<SecurityRequirementsOperationFilter>(true, "JWT");
+                options.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
             });
         }
 
