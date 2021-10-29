@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SchoolAPI.Data;
 using SchoolAPI.Models;
+using SchoolAPI.Services;
 
 namespace SchoolAPI.Controllers
 {
@@ -15,10 +16,12 @@ namespace SchoolAPI.Controllers
     public class HotelRoomsController : ControllerBase
     {
         private readonly SchoolDbContext _context;
+        private readonly IHotelRoomRepository hotelRooms;
 
-        public HotelRoomsController(SchoolDbContext context)
+        public HotelRoomsController(SchoolDbContext context, IHotelRoomRepository hotelRooms)
         {
             _context = context;
+            this.hotelRooms = hotelRooms;
         }
 
         // GET: api/HotelRooms
