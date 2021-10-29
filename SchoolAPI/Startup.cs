@@ -15,6 +15,7 @@ using SchoolAPI.Models.Services;
 using SchoolAPI.Services;
 using SchoolAPI.Services.Database;
 using SchoolAPI.Services.Identity;
+using Swashbuckle.AspNetCore.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,6 +91,17 @@ namespace SchoolAPI
                     Title = "School Demo",
                     Version = "v1",
                 });
+
+                options.AddSecurityDefinition("JWT", new OpenApiSecurityScheme
+                {
+                    Description = "Standard Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                });
+
+                options.OperationFilter<SecurityRequirementsOperationFilter>(true, "JWT");
+                options.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
             });
         }
 
