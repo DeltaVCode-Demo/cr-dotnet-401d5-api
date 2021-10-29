@@ -18,6 +18,9 @@ namespace SchoolAPI.Data
 
     public DbSet<Enrollment> Enrollments { get; set; }
 
+    public DbSet<Hotel> Hotels { get; set; }
+    public DbSet<HotelRoom> HotelRooms { get; set; }
+
     public SchoolDbContext(DbContextOptions options) : base(options)
     {
     }
@@ -26,6 +29,32 @@ namespace SchoolAPI.Data
     {
       // This calls the base method, and IdentityDbContext does interesting stuff
       base.OnModelCreating(modelBuilder);
+
+      // Set up our composite key!
+      modelBuilder.Entity<HotelRoom>()
+        .HasKey(hr => new { hr.HotelId, hr.RoomNumber });
+
+      modelBuilder.Entity<Hotel>()
+        .HasData(
+          new Hotel { Id = 10001, Name = "Downtown Cedar Rapids" },
+          new Hotel { Id = 10011, Name = "Ped Mall, Iowa City" }
+        );
+
+      modelBuilder.Entity<HotelRoom>()
+        .HasData(
+          new HotelRoom { HotelId = 10001, RoomNumber = 101, Price = 99 },
+          new HotelRoom { HotelId = 10001, RoomNumber = 102, Price = 99 },
+          new HotelRoom { HotelId = 10001, RoomNumber = 103, Price = 99 },
+          new HotelRoom { HotelId = 10001, RoomNumber = 104, Price = 99 },
+          new HotelRoom { HotelId = 10001, RoomNumber = 201, Price = 299 },
+          new HotelRoom { HotelId = 10001, RoomNumber = 202, Price = 299 },
+          new HotelRoom { HotelId = 10011, RoomNumber = 11, Price = 199 },
+          new HotelRoom { HotelId = 10011, RoomNumber = 12, Price = 199 },
+          new HotelRoom { HotelId = 10011, RoomNumber = 21, Price = 199 },
+          new HotelRoom { HotelId = 10011, RoomNumber = 22, Price = 199 }
+        );
+
+
 
       modelBuilder.Entity<Student>().HasData(
         new Student { Id = 1, FirstName = "John", LastName = "Cokos" }

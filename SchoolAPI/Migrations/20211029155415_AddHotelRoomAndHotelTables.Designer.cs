@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolAPI.Data;
 
 namespace SchoolAPI.Migrations
 {
     [DbContext(typeof(SchoolDbContext))]
-    partial class SchoolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211029155415_AddHotelRoomAndHotelTables")]
+    partial class AddHotelRoomAndHotelTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -242,18 +244,6 @@ namespace SchoolAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Hotels");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 10001,
-                            Name = "Downtown Cedar Rapids"
-                        },
-                        new
-                        {
-                            Id = 10011,
-                            Name = "Ped Mall, Iowa City"
-                        });
                 });
 
             modelBuilder.Entity("SchoolAPI.Models.HotelRoom", b =>
@@ -270,68 +260,6 @@ namespace SchoolAPI.Migrations
                     b.HasKey("HotelId", "RoomNumber");
 
                     b.ToTable("HotelRooms");
-
-                    b.HasData(
-                        new
-                        {
-                            HotelId = 10001,
-                            RoomNumber = 101,
-                            Price = 99m
-                        },
-                        new
-                        {
-                            HotelId = 10001,
-                            RoomNumber = 102,
-                            Price = 99m
-                        },
-                        new
-                        {
-                            HotelId = 10001,
-                            RoomNumber = 103,
-                            Price = 99m
-                        },
-                        new
-                        {
-                            HotelId = 10001,
-                            RoomNumber = 104,
-                            Price = 99m
-                        },
-                        new
-                        {
-                            HotelId = 10001,
-                            RoomNumber = 201,
-                            Price = 299m
-                        },
-                        new
-                        {
-                            HotelId = 10001,
-                            RoomNumber = 202,
-                            Price = 299m
-                        },
-                        new
-                        {
-                            HotelId = 10011,
-                            RoomNumber = 11,
-                            Price = 199m
-                        },
-                        new
-                        {
-                            HotelId = 10011,
-                            RoomNumber = 12,
-                            Price = 199m
-                        },
-                        new
-                        {
-                            HotelId = 10011,
-                            RoomNumber = 21,
-                            Price = 199m
-                        },
-                        new
-                        {
-                            HotelId = 10011,
-                            RoomNumber = 22,
-                            Price = 199m
-                        });
                 });
 
             modelBuilder.Entity("SchoolAPI.Models.Identity.ApplicationUser", b =>

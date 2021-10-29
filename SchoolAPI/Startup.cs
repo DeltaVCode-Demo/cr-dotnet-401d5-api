@@ -12,6 +12,8 @@ using SchoolAPI.Data;
 using SchoolAPI.Models.Identity;
 using SchoolAPI.Models.Interfaces;
 using SchoolAPI.Models.Services;
+using SchoolAPI.Services;
+using SchoolAPI.Services.Database;
 using SchoolAPI.Services.Identity;
 using System;
 using System.Collections.Generic;
@@ -48,6 +50,9 @@ namespace SchoolAPI
             services.AddTransient<IStudent, StudentService>();
             services.AddTransient<ICourse, CourseService>();
             services.AddTransient<ITechnology, TechnologyService>();
+
+
+            services.AddScoped<IHotelRoomRepository, DatabaseHotelRoomRepository>();
 
             // Identity!
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
