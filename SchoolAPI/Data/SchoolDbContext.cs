@@ -18,6 +18,9 @@ namespace SchoolAPI.Data
 
     public DbSet<Enrollment> Enrollments { get; set; }
 
+    public DbSet<Hotel> Hotels { get; set; }
+    public DbSet<HotelRoom> HotelRooms { get; set; }
+
     public SchoolDbContext(DbContextOptions options) : base(options)
     {
     }
@@ -26,6 +29,11 @@ namespace SchoolAPI.Data
     {
       // This calls the base method, and IdentityDbContext does interesting stuff
       base.OnModelCreating(modelBuilder);
+
+      // Set up our composite key!
+      modelBuilder.Entity<HotelRoom>()
+        .HasKey(hr => new { hr.HotelId, hr.RoomNumber });
+
 
       modelBuilder.Entity<Student>().HasData(
         new Student { Id = 1, FirstName = "John", LastName = "Cokos" }

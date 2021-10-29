@@ -9,11 +9,13 @@ namespace SchoolAPI.Models
 {
     public class HotelRoom
     {
+        // Composite Key = HotelId + RoomNumber
         public int HotelId { get; set; }
         public int RoomNumber { get; set; }
 
         [Column(TypeName = "money")] // Default is decimal(18,2)
         public decimal Price { get; set; }
+
 
         // Navigation Property
         public Hotel Hotel { get; set; }
