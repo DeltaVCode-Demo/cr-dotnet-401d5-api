@@ -6,18 +6,12 @@ using System.Threading.Tasks;
 
 namespace SchoolAPI.Models.DTO
 {
-  public class StudentDto
+    public class StudentDto
   {
     public int Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public List<CourseDto> Courses { get; set; }
-  }
-
-  public class CourseDto
-  {
-    public string CourseCode { get; set; }
-    public string Technology { get; set; }
   }
 
   public class NewStudentDto

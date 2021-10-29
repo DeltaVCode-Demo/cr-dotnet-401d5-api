@@ -1,3 +1,4 @@
+using SchoolAPI.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace SchoolAPI.Models.Interfaces
   public interface ICourse
   {
     // CREATE
-    Task<Course> Create(Course course);
+    Task<CourseDto> Create(CourseDto course);
 
     // GET ALL
 

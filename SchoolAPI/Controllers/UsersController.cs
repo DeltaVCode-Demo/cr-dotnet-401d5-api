@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchoolAPI.Models.Identity;
 using SchoolAPI.Services.Identity;
@@ -9,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace SchoolAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -20,7 +22,8 @@ namespace SchoolAPI.Controllers
             this.userService = userService;
         }
 
-        [HttpPost("Register")]
+        [AllowAnonymous]
+        [HttpPost("[action]")]
         public async Task<ActionResult<UserDto>> Register(RegisterData data)
         {
             var user = await userService.Register(data, this.ModelState);
@@ -31,6 +34,7 @@ namespace SchoolAPI.Controllers
             return user;
         }
 
+        [AllowAnonymous]
         [HttpPost("Login")]
         public async Task<ActionResult<UserDto>> Login(LoginData data)
         {
@@ -38,6 +42,19 @@ namespace SchoolAPI.Controllers
 
             if (user == null)
                 return Unauthorized();
+
+            return user;
+        }
+
+        // Can't access this if you are not signed in!
+        [Authorize]
+        [HttpGet("[action]")]
+        public async Task<ActionResult<UserDto>> Self()
+        {
+            var user = await userService.GetUser(this.User);
+
+            if (user == null)
+                return NotFound();
 
             return user;
         }

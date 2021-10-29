@@ -22,5 +22,8 @@ namespace SchoolAPI.Models.Identity
 
         // Could allow these if we also add to ApplicationUser
         // FirstName, LastName
+
+        // Do not allow this in a real app!!!!
+        public string[] Roles { get; set; }
     }
 }

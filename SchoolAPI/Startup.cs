@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -57,6 +58,20 @@ namespace SchoolAPI
                 .AddEntityFrameworkStores<SchoolDbContext>();
 
             services.AddScoped<IUserService, IdentityUserService>();
+            services.AddScoped<JwtService>(); // Depends on SignInManager
+
+            services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = JwtService.GetValidationParameters(Configuration);
+                });
+
 
             services.AddControllers().AddNewtonsoftJson(options =>
               options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
@@ -76,6 +91,12 @@ namespace SchoolAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(options =>
+            {
+                options.AllowAnyMethod();
+                options.AllowAnyOrigin();
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -91,6 +112,11 @@ namespace SchoolAPI
             });
 
             app.UseRouting();
+
+            // Figure out who the user is
+            app.UseAuthentication();
+            // And what they can do
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
