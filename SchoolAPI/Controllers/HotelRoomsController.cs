@@ -28,7 +28,15 @@ namespace SchoolAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<HotelRoom>>> GetHotelRooms(int hotelId)
         {
-            return await _context.HotelRooms.ToListAsync();
+            bool hotelExists = await _context.Hotels.AnyAsync(h => h.Id == hotelId);
+            if (!hotelExists)
+            {
+                return NotFound();
+            }
+
+            return await _context.HotelRooms
+                .Where(hr => hr.HotelId == hotelId)
+                .ToListAsync();
         }
 
         // GET: api/HotelRooms/5
